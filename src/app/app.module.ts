@@ -1,28 +1,8 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-
-import { NgxEchartsModule } from 'ngx-echarts';
-
 import { AppComponent } from './app.component';
-
-import * as echarts from 'echarts/core';
-import { LineChart } from 'echarts/charts';
-import {
-  TitleComponent,
-  TooltipComponent,
-  GridComponent
-} from 'echarts/components';
-// Import the Canvas renderer, note that introducing the CanvasRenderer or SVGRenderer is a required step
-import {
-  CanvasRenderer
-} from 'echarts/renderers';
-import Marcaron from './marcaron';
-
-echarts.use(
-  [TitleComponent, TooltipComponent, GridComponent, LineChart, CanvasRenderer]
-);
-echarts.registerTheme('macarons', Marcaron);
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { APP_BASE_HREF } from '@angular/common';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   declarations: [
@@ -30,10 +10,17 @@ echarts.registerTheme('macarons', Marcaron);
   ],
   imports: [
     BrowserModule,
-    NgxEchartsModule.forRoot({ echarts }),
-    HttpClientModule
+    NgxEchartsModule.forRoot({
+      /**
+       * This will import all modules from echarts.
+       * If you only need custom modules,
+       * please refer to [Custom Build] section.
+       */
+      echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
+  
 })
 export class AppModule { }
